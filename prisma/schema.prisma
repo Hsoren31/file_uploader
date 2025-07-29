@@ -12,13 +12,22 @@ datasource db {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  name    String
-  Library Library?
+  id       Int      @id @default(autoincrement())
+  name     String
+  username String   @unique
+  password String   @db.VarChar(200)
+  Library  Library?
 }
 
 model Library {
   id     Int  @id @default(autoincrement())
   user   User @relation(fields: [userId], references: [id])
   userId Int  @unique
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.Text
+  expiresAt DateTime
 }
