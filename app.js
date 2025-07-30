@@ -7,6 +7,8 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 const prisma = new PrismaClient();
 const app = express();
@@ -107,6 +109,16 @@ app.get("/log-out", (req, res, next) => {
     }
     res.redirect("/");
   });
+});
+app.get("/file/new", (req, res) => res.render("newFile"));
+app.post("/file/new", upload.single("file"), async (req, res, next) => {
+  try {
+    console.log(req.file);
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
 });
 app.get("/", (req, res) => res.render("index"));
 
