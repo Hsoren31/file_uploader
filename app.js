@@ -7,10 +7,12 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
+const prisma = new PrismaClient();
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
-const prisma = new PrismaClient();
+const folderRouter = require("./routers/folderRouter");
+
 const app = express();
 
 app.set("views", path.join(__dirname, "views"));
@@ -37,7 +39,7 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
-
+app.use("/folders", folderRouter);
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -110,6 +112,7 @@ app.get("/log-out", (req, res, next) => {
     res.redirect("/");
   });
 });
+
 app.get("/file/new", (req, res) => res.render("newFile"));
 app.post("/file/new", upload.single("file"), async (req, res, next) => {
   try {
@@ -120,7 +123,27 @@ app.post("/file/new", upload.single("file"), async (req, res, next) => {
     return next(err);
   }
 });
-app.get("/", (req, res) => res.render("index"));
+
+app.get("/", async (req, res) => {
+  let folders = [];
+  if (res.locals.currentUser) {
+    folders = await prisma.folder.findMany({
+      where: {
+        userId: res.locals.currentUser.id,
+      },
+      orderBy: [
+        {
+          title: "asc",
+        },
+      ],
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+  }
+  res.render("index", { folders });
+});
 
 const PORT = 3000;
 app.listen(PORT, () => {

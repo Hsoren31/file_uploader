@@ -12,18 +12,29 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   name     String
-  username String @unique
-  password String @db.VarChar(200)
+  username String   @unique
+  password String   @db.VarChar(200)
   File     File[]
+  Folder   Folder[]
 }
 
-model File {
+model Folder {
   id     Int    @id @default(autoincrement())
   title  String @db.VarChar(50)
   user   User   @relation(fields: [userId], references: [id])
   userId Int
+  File   File[]
+}
+
+model File {
+  id       Int    @id @default(autoincrement())
+  title    String @db.VarChar(50)
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  folder   Folder @relation(fields: [folderId], references: [id])
+  folderId Int
 }
 
 model Session {
