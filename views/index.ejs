@@ -24,7 +24,10 @@
     <form action="/folders/<%= folder.id%>/delete" method="post">
       <button type="submit">Delete</button>
     </form>
-    <%});%> <%}%>
+    <%});%> <%if (files) {%> <% files.forEach(file => {%>
+    <p><%= file.originalname %></p>
+    <a href="/file/<%= file.filename %>/download">Download</a>
+    <%})%> <%}%> <%}%>
     <a href="/log-out">LOG OUT</a>
     <%} else {%>
     <h1>Please Login</h1>
