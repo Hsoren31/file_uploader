@@ -11,14 +11,30 @@
     <a href="/file/new">Upload File</a>
     <form action="/folders/new" method="post">
       <label for="title">New Folder Name: </label>
-      <input type="text" name="title" id="title" placeholder="Folder 1" />
+      <input
+        type="text"
+        name="title"
+        id="title"
+        minlength="1"
+        maxlength="10"
+        placeholder="Folder 1"
+        required
+      />
       <button type="submit">Submit</button>
     </form>
     <% if (folders) {%> <% folders.forEach(folder => { %>
     <p><%= folder.title %></p>
     <form action="/folders/<%=folder.id%>/update" method="post">
       <label for="title">New Name: </label>
-      <input type="text" name="title" id="title" />
+      <input
+        type="text"
+        name="title"
+        id="title"
+        minlength="1"
+        maxlength="10"
+        placeholder="Folder 1 New"
+        required
+      />
       <button type="submit">Submit</button>
     </form>
     <form action="/folders/<%= folder.id%>/delete" method="post">
