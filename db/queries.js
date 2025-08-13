@@ -1,6 +1,39 @@
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
+async function createUser(name, username, password) {
+  try {
+    await prisma.user.create({
+      data: {
+        name,
+        username,
+        password,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+async function findUserByUsername(username) {
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+  return user;
+}
+
+async function findUserById(id) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  return user;
+}
+
 async function createFolder(userId, title) {
   try {
     await prisma.user.update({
@@ -83,6 +116,9 @@ async function findFileById(id) {
 }
 
 module.exports = {
+  createUser,
+  findUserByUsername,
+  findUserById,
   createFolder,
   updateFolder,
   deleteFolder,

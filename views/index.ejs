@@ -28,17 +28,17 @@
     <p><%= file.originalname %></p>
     <a href="/file/<%= file.filename %>/download">Download</a>
     <%})%> <%}%> <%}%>
-    <a href="/log-out">LOG OUT</a>
+    <a href="/user/log-out">LOG OUT</a>
     <%} else {%>
     <h1>Please Login</h1>
-    <form action="/log-in" method="post">
+    <form action="/user/log-in" method="post">
       <label for="username">Username: </label>
       <input type="text" name="username" id="username" placeholder="username" />
       <label for="password">Password: </label>
       <input type="password" name="password" id="password" />
       <button type="submit">Login</button>
     </form>
-    <a href="/sign-up">Sign Up</a>
+    <a href="/user/signup">Sign Up</a>
     <% } %>
   </body>
 </html>

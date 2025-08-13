@@ -3,12 +3,11 @@ const path = require("node:path");
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
-const bcrypt = require("bcryptjs");
-const LocalStrategy = require("passport-local").Strategy;
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
 const prisma = new PrismaClient();
 
+const userRouter = require("./routers/userRouter");
 const folderRouter = require("./routers/folderRouter");
 const fileRouter = require("./routers/fileRouter");
 
@@ -38,81 +37,10 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use("/user", userRouter);
 app.use("/folders", folderRouter);
 app.use("/file", fileRouter);
-passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          username,
-        },
-      });
-      if (!user) {
-        return done(null, false, { message: "Incorrect Username" });
-      }
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        return done(null, false, { message: "Incorrect Password" });
-      }
-      return done(null, user);
-    } catch (err) {
-      return done(err);
-    }
-  })
-);
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
-
-app.get("/sign-up", (req, res) => res.render("sign-up-form"));
-app.post("/sign-up", async (req, res, next) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const { name, username } = req.body;
-    await prisma.user.create({
-      data: {
-        name,
-        username,
-        password: hashedPassword,
-      },
-    });
-  } catch (err) {
-    console.log(err);
-    return next(err);
-  }
-  res.redirect("/");
-});
-app.post(
-  "/log-in",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
-  })
-);
-app.get("/log-out", (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
-
 app.get("/", async (req, res) => {
   let folders = [];
   let files = [];
@@ -128,7 +56,6 @@ app.get("/", async (req, res) => {
       },
     });
   }
-  console.log(folders, files);
   res.render("index", { folders, files });
 });
 
