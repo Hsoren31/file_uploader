@@ -80,26 +80,20 @@ async function deleteFolder(folderId) {
   }
 }
 
-async function createFile(userId, file) {
-  try {
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        File: {
-          create: {
-            originalname: file.originalname,
-            filename: file.filename,
-            type: file.mimetype,
-            size: file.size,
-          },
+async function createFile(userId, fileUrl) {
+  console.log(fileUrl);
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      File: {
+        create: {
+          fileUrl,
         },
       },
-    });
-  } catch (err) {
-    console.error(err);
-  }
+    },
+  });
 }
 
 async function findFileById(id) {

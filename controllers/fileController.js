@@ -1,5 +1,14 @@
 const db = require("../db/queries");
-const path = require("node:path");
+const fs = require("fs");
+const http = require("http");
+const cloudinary = require("cloudinary").v2;
+
+//config cloud storage
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 async function newGet(req, res) {
   res.render("newFile");
@@ -7,10 +16,27 @@ async function newGet(req, res) {
 
 async function newPost(req, res, next) {
   try {
-    console.log(req.file);
+    const fileUrl = await cloudinary.uploader
+      .upload(req.file.path, {
+        transformation: [
+          {
+            quality: "auto",
+            fetch_format: "auto",
+          },
+          {
+            width: 1200,
+            height: 1200,
+            crop: "fill",
+            gravity: "auto",
+          },
+        ],
+      })
+      .then((result) => {
+        return result.url;
+      })
+      .catch((error) => console.error(error));
     const userId = res.locals.currentUser.id;
-    const file = req.file;
-    await db.createFile(userId, file);
+    await db.createFile(userId, fileUrl);
     res.redirect("/");
   } catch (err) {
     console.error(err);

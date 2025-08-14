@@ -41,7 +41,7 @@
       <button type="submit">Delete</button>
     </form>
     <%});%> <%if (files) {%> <% files.forEach(file => {%>
-    <p><%= file.originalname %></p>
+    <a href="<%= file.fileUrl %>" target="_blank">Image <%= file.id %></a>
     <a href="/file/<%= file.filename %>/download">Download</a>
     <%})%> <%}%> <%}%>
     <a href="/user/log-out">LOG OUT</a>
