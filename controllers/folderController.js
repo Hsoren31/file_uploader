@@ -35,8 +35,37 @@ async function deleteFolder(req, res, next) {
   }
 }
 
+async function getFolder(req, res) {
+  try {
+    const { id } = req.params;
+    const folder = await db.getFolder(Number(id));
+    res.render("folder", { folder });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function addToFolder(req, res) {
+  try {
+    const { fileId } = req.params;
+    const { folders } = req.body;
+    if (Array.isArray(folders)) {
+      folders.forEach(async (folder) => {
+        await db.insertFile(Number(fileId), Number(folder));
+      });
+    } else {
+      await db.insertFile(Number(fileId), Number(folders));
+    }
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports = {
   createFolder,
   updateFolder,
   deleteFolder,
+  getFolder,
+  addToFolder,
 };

@@ -49,10 +49,16 @@ app.get("/", async (req, res) => {
       where: {
         userId: res.locals.currentUser.id,
       },
+      orderBy: {
+        id: "asc",
+      },
     });
     files = await prisma.file.findMany({
       where: {
         userId: res.locals.currentUser.id,
+      },
+      orderBy: {
+        id: "asc",
       },
     });
   }

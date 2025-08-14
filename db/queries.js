@@ -11,7 +11,7 @@ async function createUser(name, username, password) {
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return err;
   }
 }
@@ -80,8 +80,37 @@ async function deleteFolder(folderId) {
   }
 }
 
+async function getFolder(id) {
+  const folder = await prisma.folder.findFirst({
+    where: {
+      id,
+    },
+    include: {
+      File: true,
+    },
+  });
+  return folder;
+}
+
+async function insertFile(fileId, folderId) {
+  await prisma.folder.update({
+    where: {
+      id: folderId,
+    },
+    data: {
+      File: {
+        connect: {
+          id: fileId,
+        },
+      },
+    },
+    include: {
+      File: true,
+    },
+  });
+}
+
 async function createFile(userId, fileUrl) {
-  console.log(fileUrl);
   await prisma.user.update({
     where: {
       id: userId,
@@ -116,6 +145,8 @@ module.exports = {
   createFolder,
   updateFolder,
   deleteFolder,
+  getFolder,
+  insertFile,
   createFile,
   findFileById,
 };

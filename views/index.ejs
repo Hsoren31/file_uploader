@@ -8,6 +8,7 @@
   <body>
     <% if (currentUser) { %>
     <h1>Welcome Back <%= currentUser.username %></h1>
+    <a href="/user/log-out">LOG OUT</a>
     <a href="/file/new">Upload File</a>
     <form action="/folders/new" method="post">
       <label for="title">New Folder Name: </label>
@@ -23,29 +24,28 @@
       <button type="submit">Submit</button>
     </form>
     <% if (folders) {%> <% folders.forEach(folder => { %>
-    <p><%= folder.title %></p>
-    <form action="/folders/<%=folder.id%>/update" method="post">
-      <label for="title">New Name: </label>
-      <input
-        type="text"
-        name="title"
-        id="title"
-        minlength="1"
-        maxlength="10"
-        placeholder="Folder 1 New"
-        required
-      />
-      <button type="submit">Submit</button>
-    </form>
-    <form action="/folders/<%= folder.id%>/delete" method="post">
-      <button type="submit">Delete</button>
-    </form>
+    <a href="/folders/<%= folder.id %>"><%= folder.title %></a>
+
     <%});%> <%if (files) {%> <% files.forEach(file => {%>
     <a href="<%= file.fileUrl %>" target="_blank">Image <%= file.id %></a>
-    <a href="/file/<%= file.filename %>/download">Download</a>
-    <%})%> <%}%> <%}%>
-    <a href="/user/log-out">LOG OUT</a>
-    <%} else {%>
+    <form action="/folders/add/<%= file.id%>" method="post">
+      <fieldset>
+        <legend>Folders:</legend>
+        <% if (folders) {%> <% folders.forEach(folder => { %>
+        <div>
+          <input
+            type="checkbox"
+            name="folders"
+            id="<%= folder.id %>"
+            value="<%= folder.id%>"
+          />
+          <label for="<%= folder.id %>"><%= folder.title%> </label>
+        </div>
+        <%})%> <%}%>
+      </fieldset>
+      <button type="submit">Add File</button>
+    </form>
+    <%})%> <%}%> <%}%> <%} else {%>
     <h1>Please Login</h1>
     <form action="/user/log-in" method="post">
       <label for="username">Username: </label>
