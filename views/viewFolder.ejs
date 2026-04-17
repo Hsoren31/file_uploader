@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title><%= folder.title %></title>
+  </head>
+  <body>
+    <% if (currentUser) { %>
+      <%-include("./partials/header")%>
+      <div>
+        <h2><%= folder.title %></h2>
+        <button popovertarget="edit-folder">Edit Folder</button> 
+        <div popover id="edit-folder" class="form-popover">
+          <form action="/folders/<%=folder.id%>/update" method="post">
+            <div class="form-group">
+              <label for="title">Rename: </label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                minlength="1"
+                maxlength="10"
+                placeholder="Folder 1 New"
+                required
+              />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+          <form action="/folders/<%= folder.id%>/delete" method="post">
+            <button type="submit">Delete Folder</button>
+          </form>
+        </div>
+      </div>
+      <% if(Array.isArray(folder.File)) {%>
+        <ul class="file-list">
+          <% folder.File.forEach(file => {%>
+            <li class="file">
+              <img src="<%= file.fileUrl %>" alt="img" />
+              <a href="<%= file.fileUrl %>" target="_blank">Image <%= file.id %></a>
+            </li>
+          <%})%>
+        </ul>
+      <%}%>
+    <%} else {%>
+      <%-include('./partials/login')%>
+    <%}%>
+  </body>
+</html>

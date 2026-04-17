@@ -1,0 +1,8 @@
+<ul class="folder-list">
+  <% folders.forEach(folder => { %>
+  <li>
+    <i class="fa-solid fa-folder"></i>
+    <a href="/folders/<%= folder.id %>" class="button"><%= folder.title %></a>
+  </li>
+  <%});%>
+</ul>

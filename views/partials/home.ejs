@@ -1,0 +1,33 @@
+<%-include('./header.ejs')%>
+<main>
+  <section class="user">
+    <h2>Welcome Back <%=currentUser.username%></h2>
+      <button popovertarget="new-menu-buttons" class="new-menu">
+        <i class="fa-solid fa-plus"></i>New
+      </button>
+      <div class="new-buttons form-popover" popover id="new-menu-buttons">
+        <button popovertarget="upload-form" class="upload-button">
+          New File
+        </button>
+          <div popover id="upload-form" class="form-popover">
+            <%-include('./uploadFile')%>
+          </div>
+        <button popovertarget="create-folder" class="new-folder-button">New Folder</button>
+          <div popover id="create-folder" class="form-popover">
+            <%-include('./newFolder.ejs')%>
+          </div>
+        </div>
+  </section>
+  <section class="content">
+    <div class="folders">
+      <% if (folders) {%>
+        <%-include('./folderList.ejs')%>
+      <%}%>
+    </div>
+    <div class="files">
+      <%if (files) {%>
+        <%-include('fileList')%>
+      <%}%>  
+    </div>
+  </section>
+</main>

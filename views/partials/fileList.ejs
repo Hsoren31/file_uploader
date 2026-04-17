@@ -1,0 +1,24 @@
+<ul class="file-list">
+  <% files.forEach(file => {%>
+  <li class="file">
+    <a href="<%= file.fileUrl %>" target="_blank">
+      <img src="<%= file.fileUrl %>" alt="img" class="file-image"/>
+    </a>
+    <div class="file-details">
+      <p>Image <%= file.id %></p>
+      <button popovertarget="save-to-folder" class="save-button"><i class="fa-solid fa-folder-plus"></i></button>
+      <div popover id="save-to-folder" class="form-popover">
+        <form action="/folders/add/<%= file.id %>" method="post">
+            <% folders.forEach(folder => {%>
+              <div class="form-group">
+                <label for="<%=folder.title%>"><%=folder.title%></label>
+                <input type="checkbox" name="folders" id="<%=folder.title%>" value="<%=folder.id%>">
+              </div>
+            <%})%>
+            <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+  </li>
+  <%})%>
+</ul>

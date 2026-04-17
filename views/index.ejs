@@ -3,58 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <script type="module">
+        if (!("anchorName" in document.documentElement.style)) {
+          import("https://unpkg.com/@oddbird/css-anchor-positioning");
+        }
+      </script>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
     <title>Home</title>
   </head>
   <body>
     <% if (currentUser) { %>
-    <h1>Welcome Back <%= currentUser.username %></h1>
-    <a href="/user/log-out">LOG OUT</a>
-    <a href="/file/new">Upload File</a>
-    <form action="/folders/new" method="post">
-      <label for="title">New Folder Name: </label>
-      <input
-        type="text"
-        name="title"
-        id="title"
-        minlength="1"
-        maxlength="10"
-        placeholder="Folder 1"
-        required
-      />
-      <button type="submit">Submit</button>
-    </form>
-    <% if (folders) {%> <% folders.forEach(folder => { %>
-    <a href="/folders/<%= folder.id %>"><%= folder.title %></a>
-
-    <%});%> <%if (files) {%> <% files.forEach(file => {%>
-    <a href="<%= file.fileUrl %>" target="_blank">Image <%= file.id %></a>
-    <form action="/folders/add/<%= file.id%>" method="post">
-      <fieldset>
-        <legend>Folders:</legend>
-        <% if (folders) {%> <% folders.forEach(folder => { %>
-        <div>
-          <input
-            type="checkbox"
-            name="folders"
-            id="<%= folder.id %>"
-            value="<%= folder.id%>"
-          />
-          <label for="<%= folder.id %>"><%= folder.title%> </label>
-        </div>
-        <%})%> <%}%>
-      </fieldset>
-      <button type="submit">Add File</button>
-    </form>
-    <%})%> <%}%> <%}%> <%} else {%>
-    <h1>Please Login</h1>
-    <form action="/user/log-in" method="post">
-      <label for="username">Username: </label>
-      <input type="text" name="username" id="username" placeholder="username" />
-      <label for="password">Password: </label>
-      <input type="password" name="password" id="password" />
-      <button type="submit">Login</button>
-    </form>
-    <a href="/user/signup">Sign Up</a>
-    <% } %>
+      <%-include("./partials/home")%>
+    <%} else {%>
+      <%-include('./partials/login')%>
+    <%}%>
   </body>
 </html>
