@@ -38,8 +38,8 @@ async function deleteFolder(req, res, next) {
 async function getFolder(req, res) {
   try {
     const { id } = req.params;
-    const folder = await db.getFolder(Number(id));
-    res.render("folder", { folder });
+    const folder = await db.getFolder(id);
+    res.render("viewFolder", { folder });
   } catch (err) {
     console.error(err);
   }

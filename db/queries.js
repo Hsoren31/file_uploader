@@ -81,9 +81,10 @@ async function deleteFolder(folderId) {
 }
 
 async function getFolder(id) {
-  const folder = await prisma.folder.findFirst({
+  const folderId = Number(id);
+  const folder = await prisma.folder.findUnique({
     where: {
-      id,
+      id: folderId,
     },
     include: {
       File: true,
