@@ -1,20 +1,12 @@
 const db = require("../db/queries");
-const cloudinary = require("../config/cloudinary");
-const streamifier = require("streamifier");
-
+const uploadToCloudinary = "../middleware/upload.js".uploadToCloudinary;
 async function newGet(req, res) {
   res.render("newFile");
 }
 
 async function newPost(req, res, next) {
   try {
-    const fileUrl = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream((error, result) => {
-        if (error) reject(error);
-        else resolve(result);
-      });
-      streamifier.createReadStream(req.file.buffer).pipe(stream);
-    });
+    const result = await uploadToCloudinary(req.file.buffer);
     const userId = res.locals.currentUser.id;
     await db.createFile(userId, fileUrl.secure_url);
     res.redirect("/");
