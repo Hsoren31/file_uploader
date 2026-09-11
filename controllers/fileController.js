@@ -1,7 +1,6 @@
 const db = require("../db/queries");
-const fs = require("fs");
-const http = require("http");
 const cloudinary = require("cloudinary").v2;
+const streamifier = require("streamifier");
 
 //config cloud storage
 cloudinary.config({
@@ -16,27 +15,15 @@ async function newGet(req, res) {
 
 async function newPost(req, res, next) {
   try {
-    const fileUrl = await cloudinary.uploader
-      .upload(req.file.path, {
-        transformation: [
-          {
-            quality: "auto",
-            fetch_format: "auto",
-          },
-          {
-            width: 1200,
-            height: 1200,
-            crop: "fill",
-            gravity: "auto",
-          },
-        ],
-      })
-      .then((result) => {
-        return result.url;
-      })
-      .catch((error) => console.error(error));
+    const fileUrl = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream((error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      });
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
+    });
     const userId = res.locals.currentUser.id;
-    await db.createFile(userId, fileUrl);
+    await db.createFile(userId, fileUrl.secure_url);
     res.redirect("/");
   } catch (err) {
     console.error(err);
