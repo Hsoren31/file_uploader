@@ -1,5 +1,6 @@
 const db = require("../db/queries");
-const uploadToCloudinary = "../middleware/upload.js".uploadToCloudinary;
+const uploadToCloudinary =
+  require("../middleware/upload.js").uploadToCloudinary;
 async function newGet(req, res) {
   res.render("newFile");
 }
