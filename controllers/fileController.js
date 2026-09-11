@@ -1,13 +1,6 @@
 const db = require("../db/queries");
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("../config/cloudinary");
 const streamifier = require("streamifier");
-
-//config cloud storage
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-});
 
 async function newGet(req, res) {
   res.render("newFile");
