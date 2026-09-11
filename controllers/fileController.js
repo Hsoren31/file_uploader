@@ -8,7 +8,7 @@ async function newPost(req, res, next) {
   try {
     const result = await uploadToCloudinary(req.file.buffer);
     const userId = res.locals.currentUser.id;
-    await db.createFile(userId, fileUrl.secure_url);
+    await db.createFile(userId, result.secure_url);
     res.redirect("/");
   } catch (err) {
     console.error(err);
