@@ -1,9 +1,22 @@
-const db = require("../db/queries");
+const db = require("../db/folderQueries");
 
 async function createFolder(req, res, next) {
   try {
     const userId = res.locals.currentUser.id;
     const { title } = req.body;
+
+    if (title.trim() === "") {
+      const folders = await db.readUsersFolders(userId);
+      const untitledFolders = folders.filter((folder) =>
+        folder.title.startsWith("Folder ")
+      );
+      const newTitle = `Folder ${untitledFolders.length + 1}`;
+
+      await db.createFolder(userId, newTitle);
+      res.redirect("/");
+      return;
+    }
+
     await db.createFolder(userId, title);
     res.redirect("/");
   } catch (err) {
