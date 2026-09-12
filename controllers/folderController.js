@@ -25,6 +25,17 @@ async function createFolder(req, res, next) {
   }
 }
 
+async function getFolder(req, res) {
+  try {
+    const { id } = req.params;
+    const folder = await db.readFolderById(Number(id));
+    console.log(folder);
+    res.render("viewFolder", { folder });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function updateFolder(req, res, next) {
   try {
     const { folderId } = req.params;
@@ -45,16 +56,6 @@ async function deleteFolder(req, res, next) {
   } catch (err) {
     console.error(err);
     return next(err);
-  }
-}
-
-async function getFolder(req, res) {
-  try {
-    const { id } = req.params;
-    const folder = await db.getFolder(id);
-    res.render("viewFolder", { folder });
-  } catch (err) {
-    console.error(err);
   }
 }
 

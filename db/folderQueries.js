@@ -30,6 +30,19 @@ async function readUsersFolders(userId) {
   return folders;
 }
 
+async function readFolderById(id) {
+  const folder = await prisma.folder.findFirst({
+    where: {
+      id,
+    },
+    include: {
+      File: true,
+    },
+  });
+
+  return folder;
+}
+
 // update folder
 
 // delete folder
@@ -41,4 +54,5 @@ async function readUsersFolders(userId) {
 module.exports = {
   createFolder,
   readUsersFolders,
+  readFolderById,
 };
