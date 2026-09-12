@@ -50,8 +50,8 @@ async function updateFolder(req, res, next) {
 
 async function deleteFolder(req, res, next) {
   try {
-    const { folderId } = req.params;
-    await db.deleteFolder(Number(folderId));
+    const { id } = req.params;
+    await db.deleteFolder(Number(id));
     res.redirect("/");
   } catch (err) {
     console.error(err);
