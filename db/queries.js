@@ -34,21 +34,6 @@ async function findUserById(id) {
   return user;
 }
 
-async function updateFolder(folderId, title) {
-  try {
-    await prisma.folder.update({
-      where: {
-        id: folderId,
-      },
-      data: {
-        title,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 async function deleteFolder(folderId) {
   try {
     await prisma.folder.delete({
@@ -111,7 +96,6 @@ module.exports = {
   createUser,
   findUserByUsername,
   findUserById,
-  updateFolder,
   deleteFolder,
   insertFile,
   createFile,

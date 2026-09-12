@@ -38,10 +38,10 @@ async function getFolder(req, res) {
 
 async function updateFolder(req, res, next) {
   try {
-    const { folderId } = req.params;
+    const { id } = req.params;
     const { title } = req.body;
-    await db.updateFolder(Number(folderId), title);
-    res.redirect("/");
+    await db.updateFolder(Number(id), title);
+    res.redirect(`/folders/${id}`);
   } catch (err) {
     console.error(err);
     return next(err);

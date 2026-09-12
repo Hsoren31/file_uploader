@@ -44,6 +44,21 @@ async function readFolderById(id) {
 }
 
 // update folder
+async function updateFolder(id, title) {
+  try {
+    return await prisma.folder.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 
 // delete folder
 
@@ -55,4 +70,5 @@ module.exports = {
   createFolder,
   readUsersFolders,
   readFolderById,
+  updateFolder,
 };
