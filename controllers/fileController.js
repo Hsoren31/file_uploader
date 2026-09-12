@@ -5,7 +5,7 @@ async function newGet(req, res) {
   res.render("newFile");
 }
 
-async function newPost(req, res, next) {
+async function uploadFile(req, res, next) {
   try {
     const result = await uploadToCloudinary(req.file.buffer);
     const userId = res.locals.currentUser.id;
@@ -39,7 +39,7 @@ async function downloadPost(req, res) {
 
 module.exports = {
   newGet,
-  newPost,
+  uploadFile,
   fileByIdGet,
   downloadPost,
 };

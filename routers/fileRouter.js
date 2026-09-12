@@ -16,7 +16,7 @@ const upload = multer({
 });
 
 fileRouter.get("/new", fileController.newGet);
-fileRouter.post("/new", upload.single("file"), fileController.newPost);
+fileRouter.post("/new", upload.single("file"), fileController.uploadFile);
 
 fileRouter.get("/:id", fileController.fileByIdGet);
 fileRouter.get("/:filename/download", fileController.downloadPost);

@@ -112,18 +112,17 @@ async function insertFile(fileId, folderId) {
 }
 
 async function createFile(userId, fileUrl) {
-  await prisma.user.update({
-    where: {
-      id: userId,
-    },
+  const file = await prisma.file.create({
     data: {
-      File: {
-        create: {
-          fileUrl,
+      fileUrl,
+      user: {
+        connect: {
+          id: userId,
         },
       },
     },
   });
+  console.log(file);
 }
 
 async function findFileById(id) {
