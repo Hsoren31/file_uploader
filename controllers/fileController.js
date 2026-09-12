@@ -1,6 +1,7 @@
-const db = require("../db/queries");
+const db = require("../db/fileQueries");
 const uploadToCloudinary =
   require("../middleware/upload.js").uploadToCloudinary;
+
 async function newGet(req, res) {
   res.render("newFile");
 }
@@ -17,10 +18,15 @@ async function uploadFile(req, res, next) {
   }
 }
 
-async function fileByIdGet(req, res) {
-  const { id } = req.params;
-  const file = await db.findFileById(id);
-  res.render("singleFile", { file });
+async function fileByIdGet(req, res, next) {
+  try {
+    const { id } = req.params;
+    const file = await db.readFileById(Number(id));
+    res.render("viewFile", { file });
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
 }
 
 async function downloadPost(req, res) {

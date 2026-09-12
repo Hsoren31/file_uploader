@@ -111,33 +111,6 @@ async function insertFile(fileId, folderId) {
   });
 }
 
-async function createFile(userId, fileUrl) {
-  const file = await prisma.file.create({
-    data: {
-      fileUrl,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
-    },
-  });
-  console.log(file);
-}
-
-async function findFileById(id) {
-  try {
-    const file = await prisma.file.findFirst({
-      where: {
-        id,
-      },
-    });
-    return file;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 module.exports = {
   createUser,
   findUserByUsername,
@@ -147,6 +120,4 @@ module.exports = {
   deleteFolder,
   getFolder,
   insertFile,
-  createFile,
-  findFileById,
 };

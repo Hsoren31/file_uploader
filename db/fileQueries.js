@@ -19,6 +19,21 @@ async function createFile(userId, fileUrl) {
   }
 }
 
+async function readFileById(id) {
+  try {
+    const file = await prisma.file.findFirstOrThrow({
+      where: {
+        id,
+      },
+    });
+    return file;
+  } catch (err) {
+    console.error(err);
+    throw new Error("Couldn't find file");
+  }
+}
+
 module.exports = {
   createFile,
+  readFileById,
 };

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>File Uploader</title>
+  </head>
+  <body>
+    <% if (currentUser) { %>
+      <%-include("./partials/header")%>
+      <div>
+        <h2><%= file.id %></h2>
+        <p><%= file.dateCreated %></p>
+        <img src="<%= file.fileUrl %>" alt="img" class="file-image"/>
+        <button>Download</button>
+      </div>
+    <%} else {%>
+      <%-include('./partials/login')%>
+    <%}%>
+  </body>
+</html>
