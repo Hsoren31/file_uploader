@@ -1,6 +1,7 @@
 const db = require("../db/fileQueries");
 const uploadToCloudinary =
   require("../middleware/upload.js").uploadToCloudinary;
+const Readable = require("stream").Readable;
 
 async function newGet(req, res) {
   res.render("newFile");
@@ -41,17 +42,20 @@ async function deleteFile(req, res, next) {
 }
 
 async function downloadPost(req, res) {
-  const filename = req.params.filename;
-  const filePath = path.join(__dirname, "../uploads", filename);
+  const { id } = req.params;
+  const file = await db.readFileById(Number(id));
+  if (!file) {
+    res.status(404).send("Could not find file.");
+    return;
+  }
 
-  res.download(filePath, (err) => {
-    if (err) {
-      console.error("File download failed:", err);
-      res.status(500).send("Error downloading file.");
-    } else {
-      console.log("File downloaded successfully.");
-    }
-  });
+  const response = await fetch(file.fileUrl);
+  if (!response.ok) return res.status(502).send("Failed to fetch file");
+
+  res.setHeader("Content-Disposition", "attachment; filename=`file`");
+  res.setHeader("Content-Type", response.headers.get("content-type"));
+
+  Readable.fromWeb(response.body).pipe(res);
 }
 
 module.exports = {

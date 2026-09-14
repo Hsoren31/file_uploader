@@ -16,7 +16,7 @@
         <form action="/file/<%=file.id%>/delete" method="post">
           <button type="submit">Delete File</button>
         </form>
-        <button>Download</button>
+        <a href="/files/<%= file.id %>/download">Download</a>
       </div>
     <%} else {%>
       <%-include('./partials/login')%>
