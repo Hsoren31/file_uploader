@@ -29,6 +29,17 @@ async function fileByIdGet(req, res, next) {
   }
 }
 
+async function deleteFile(req, res, next) {
+  try {
+    const { id } = req.params;
+    await db.deleteFile(Number(id));
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
+}
+
 async function downloadPost(req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, "../uploads", filename);
@@ -47,5 +58,6 @@ module.exports = {
   newGet,
   uploadFile,
   fileByIdGet,
+  deleteFile,
   downloadPost,
 };

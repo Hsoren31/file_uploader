@@ -19,6 +19,7 @@ fileRouter.get("/new", fileController.newGet);
 fileRouter.post("/new", upload.single("file"), fileController.uploadFile);
 
 fileRouter.get("/:id", fileController.fileByIdGet);
+fileRouter.post("/:id/delete", fileController.deleteFile);
 fileRouter.get("/:filename/download", fileController.downloadPost);
 
 module.exports = fileRouter;

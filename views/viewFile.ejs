@@ -13,6 +13,9 @@
         <h2><%= file.id %></h2>
         <p><%= file.dateCreated %></p>
         <img src="<%= file.fileUrl %>" alt="img" class="file-image"/>
+        <form action="/file/<%=file.id%>/delete" method="post">
+          <button type="submit">Delete File</button>
+        </form>
         <button>Download</button>
       </div>
     <%} else {%>

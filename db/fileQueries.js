@@ -33,7 +33,21 @@ async function readFileById(id) {
   }
 }
 
+async function deleteFile(id) {
+  try {
+    await prisma.file.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
 module.exports = {
   createFile,
   readFileById,
+  deleteFile,
 };
