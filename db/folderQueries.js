@@ -75,6 +75,21 @@ async function deleteFolder(id) {
 }
 
 // add to folder
+async function addFileToFolder(folderId, fileId) {
+  const folder = await prisma.folder.update({
+    where: {
+      id: folderId,
+    },
+    data: {
+      File: {
+        connect: {
+          id: fileId,
+        },
+      },
+    },
+  });
+  return folder;
+}
 
 // remove from folder
 
@@ -84,4 +99,5 @@ module.exports = {
   readFolderById,
   updateFolder,
   deleteFolder,
+  addFileToFolder,
 };

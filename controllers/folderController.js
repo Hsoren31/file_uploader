@@ -59,20 +59,15 @@ async function deleteFolder(req, res, next) {
   }
 }
 
-async function addToFolder(req, res) {
+async function addToFolder(req, res, next) {
   try {
     const { fileId } = req.params;
-    const { folders } = req.body;
-    if (Array.isArray(folders)) {
-      folders.forEach(async (folder) => {
-        await db.insertFile(Number(fileId), Number(folder));
-      });
-    } else {
-      await db.insertFile(Number(fileId), Number(folders));
-    }
-    res.redirect("/");
+    const { folder } = req.body;
+    await db.addFileToFolder(Number(folder), Number(fileId));
+    res.redirect(`/folders/${folder}`);
   } catch (err) {
     console.error(err);
+    next(err);
   }
 }
 
