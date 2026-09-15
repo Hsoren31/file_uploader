@@ -4,7 +4,7 @@
     <img src="<%= file.fileUrl %>" alt="img" class="file-image"/>
     <div class="file-details">
       <a href="/file/<%= file.id %>">
-        <p>Image <%= file.id %></p>
+        <p><%= file.name %></p>
       </a>
       <button popovertarget="save-to-folder" class="save-button"><i class="fa-solid fa-folder-plus"></i></button>
       <div popover id="save-to-folder" class="form-popover">

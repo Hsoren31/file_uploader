@@ -10,9 +10,10 @@
     <% if (currentUser) { %>
       <%-include("./partials/header")%>
       <div>
-        <h2><%= file.id %></h2>
-        <p><%= file.dateCreated %></p>
         <img src="<%= file.fileUrl %>" alt="img" class="file-image"/>
+        <h2>Name: <%= file.name %></h2>
+        <p>Size: <%= formatBytes(file.size)%> </p>
+        <p>Date Uploaded: <%= formatDate(file.dateCreated) %></p>
         <form action="/file/<%=file.id%>/delete" method="post">
           <button type="submit">Delete File</button>
         </form>

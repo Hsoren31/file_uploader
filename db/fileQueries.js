@@ -1,11 +1,13 @@
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
-async function createFile(userId, fileUrl) {
+async function createFile(userId, title, file) {
   try {
     await prisma.file.create({
       data: {
-        fileUrl,
+        name: title,
+        fileUrl: file.secure_url,
+        size: String(file.bytes),
         user: {
           connect: {
             id: userId,

@@ -43,6 +43,23 @@ app.use((req, res, next) => {
 app.use("/user", userRouter);
 app.use("/folders", folderRouter);
 app.use("/file", fileRouter);
+
+app.locals.formatBytes = function (bytesString, decimals = 2) {
+  let bytes = Number(bytesString);
+  if (bytes === 0) return "0 Bytes";
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};
+app.locals.formatDate = function (date) {
+  return new Date(date).toDateString();
+};
+
 app.get("/", async (req, res) => {
   let folders = [];
   let files = [];

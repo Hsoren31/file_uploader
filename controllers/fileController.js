@@ -9,9 +9,10 @@ async function newGet(req, res) {
 
 async function uploadFile(req, res, next) {
   try {
+    const { title } = req.body;
     const result = await uploadToCloudinary(req.file.buffer);
     const userId = res.locals.currentUser.id;
-    await db.createFile(userId, result.secure_url);
+    await db.createFile(userId, title, result);
     res.redirect("/");
   } catch (err) {
     console.error(err);
