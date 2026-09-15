@@ -34,65 +34,6 @@ async function findUserById(id) {
   return user;
 }
 
-async function createFolder(userId, title) {
-  try {
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        Folder: {
-          create: {
-            title,
-          },
-        },
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-async function updateFolder(folderId, title) {
-  try {
-    await prisma.folder.update({
-      where: {
-        id: folderId,
-      },
-      data: {
-        title,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-async function deleteFolder(folderId) {
-  try {
-    await prisma.folder.delete({
-      where: {
-        id: folderId,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-async function getFolder(id) {
-  const folderId = Number(id);
-  const folder = await prisma.folder.findUnique({
-    where: {
-      id: folderId,
-    },
-    include: {
-      File: true,
-    },
-  });
-  return folder;
-}
-
 async function insertFile(fileId, folderId) {
   await prisma.folder.update({
     where: {
@@ -115,9 +56,5 @@ module.exports = {
   createUser,
   findUserByUsername,
   findUserById,
-  createFolder,
-  updateFolder,
-  deleteFolder,
-  getFolder,
   insertFile,
 };

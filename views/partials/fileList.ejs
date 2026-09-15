@@ -9,12 +9,12 @@
       <button popovertarget="save-to-folder" class="save-button"><i class="fa-solid fa-folder-plus"></i></button>
       <div popover id="save-to-folder" class="form-popover">
         <form action="/folders/add/<%= file.id %>" method="post">
+          <label for="folder">Select folder: </label>
+          <select name="folder" id="folder">
             <% folders.forEach(folder => {%>
-              <div class="form-group">
-                <label for="<%=folder.title%>"><%=folder.title%></label>
-                <input type="checkbox" name="folders" id="<%=folder.title%>" value="<%=folder.id%>">
-              </div>
+              <option value="<%= folder.id %>"><%= folder.title %></option>
             <%})%>
+          </select>
             <button type="submit">Save</button>
         </form>
       </div>
