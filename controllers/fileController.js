@@ -10,8 +10,17 @@ async function newGet(req, res) {
 async function uploadFile(req, res, next) {
   try {
     const { title } = req.body;
-    const result = await uploadToCloudinary(req.file.buffer);
     const userId = res.locals.currentUser.id;
+    const result = await uploadToCloudinary(req.file.buffer);
+    if (title.trim() === "") {
+      const files = await db.readUsersFiles(userId);
+      const untitledFiles = files.filter((file) =>
+        file.name.startsWith("Untitled ")
+      );
+      const newFile = `Untitled ${untitledFiles.length + 1}`;
+      await db.createFile(userId, newFile, result);
+      return res.redirect("/");
+    }
     await db.createFile(userId, title, result);
     res.redirect("/");
   } catch (err) {

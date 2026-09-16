@@ -35,6 +35,20 @@ async function readFileById(id) {
   }
 }
 
+async function readUsersFiles(userId) {
+  try {
+    const files = await prisma.file.findMany({
+      where: {
+        userId,
+      },
+    });
+    return files;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
 async function deleteFile(id) {
   try {
     await prisma.file.delete({
@@ -51,5 +65,6 @@ async function deleteFile(id) {
 module.exports = {
   createFile,
   readFileById,
+  readUsersFiles,
   deleteFile,
 };
