@@ -29,7 +29,6 @@ async function getFolder(req, res) {
   try {
     const { id } = req.params;
     const folder = await db.readFolderById(Number(id));
-    console.log(folder);
     res.render("viewFolder", { folder });
   } catch (err) {
     console.error(err);
