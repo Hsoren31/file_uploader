@@ -141,6 +141,15 @@ form,
   display: grid;
 }
 
+form {
+  gap: 0.5rem;
+}
+
+.auth-form {
+  max-width: 65ch;
+  margin: 0 auto;
+}
+
 /* POPOVERS */
 .form-popover:popover-open {
   display: grid;
