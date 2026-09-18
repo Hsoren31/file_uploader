@@ -165,7 +165,7 @@ form,
 .new-buttons {
   position-anchor: --new-menu;
   top: anchor(top);
-  left: anchor(left);
+  left: anchor(right);
 
   > button:hover {
     background-color: var(--clr-white);
