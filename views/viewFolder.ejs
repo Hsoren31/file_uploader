@@ -53,7 +53,7 @@
           <% folder.File.forEach(file => {%>
             <li class="file">
               <img src="<%= file.fileUrl %>" alt="img" />
-              <a href="<%= file.fileUrl %>" target="_blank"><%= file.name %></a>
+              <a href="/file/<%= file.id %>"><%= file.name %></a>
             </li>
           <%})%>
         </ul>
