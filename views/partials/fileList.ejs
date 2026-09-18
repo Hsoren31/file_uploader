@@ -7,8 +7,8 @@
         <p><%= file.name %></p>
       </a>
       <button popovertarget="save-to-folder-<%=file.id%>" class="save-button"><i class="fa-solid fa-folder-plus"></i></button>
-      <div popover id="save-to-folder-<%=file.id%>" class="form-popover">
-        <form action="/folders/add/<%= file.id %>" method="post">
+      <div popover id="save-to-folder-<%=file.id%>" class="save-to-folder">
+        <form id="add-to-folder" action="/folders/add/<%= file.id %>" method="post">
           <label for="folder">Select folder: </label>
           <select name="folder" id="folder">
             <% folders.forEach(folder => {%>
