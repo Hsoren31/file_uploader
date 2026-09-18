@@ -84,7 +84,7 @@ app.get("/", async (req, res) => {
   res.render("index", { folders, files });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`My first Express app - listening on port ${PORT}`);
 });
