@@ -204,6 +204,16 @@ form {
   padding: 1rem;
 }
 
+#upload-to-folder-btn {
+  anchor-name: --upload-to-folder;
+}
+
+#upload-to-folder {
+  position-anchor: --upload-to-folder;
+  top: anchor(top);
+  left: anchor(right);
+}
+
 /*SIGN UP*/
 /*LOGIN*/
 /*FOLDERS*/

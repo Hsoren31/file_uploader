@@ -9,6 +9,21 @@
   <body>
     <% if (currentUser) { %>
       <%-include("./partials/header")%>
+      <button id="upload-to-folder-btn" popovertarget="upload-to-folder">Upload</button>
+      <div popover id="upload-to-folder">
+        <form action="/file/new/<%=folder.id%>" method="post" enctype="multipart/form-data">
+          <legend>Upload File</legend>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+          </div>
+          <div class="form-group">
+            <label for="file">Choose a File: </label>
+            <input type="file" id="file" name="file" />  
+          </div>
+          <button type="submit">Upload</button>
+        </form>
+      </div>
       <div>
         <h2><%= folder.title %></h2>
         <button popovertarget="edit-folder">Edit Folder</button> 
@@ -38,7 +53,7 @@
           <% folder.File.forEach(file => {%>
             <li class="file">
               <img src="<%= file.fileUrl %>" alt="img" />
-              <a href="<%= file.fileUrl %>" target="_blank">Image <%= file.id %></a>
+              <a href="<%= file.fileUrl %>" target="_blank"><%= file.name %></a>
             </li>
           <%})%>
         </ul>

@@ -29,6 +29,20 @@ async function uploadFile(req, res, next) {
   }
 }
 
+async function uploadFileToFolder(req, res, next) {
+  try {
+    const { folderId } = req.params;
+    const { title } = req.body;
+    const userId = res.locals.currentUser.id;
+    const file = await uploadToCloudinary(req.file.buffer);
+    await db.createFileToFolder(userId, title, file, Number(folderId));
+    res.redirect(`/folders/${folderId}`);
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
+}
+
 async function fileByIdGet(req, res, next) {
   try {
     const { id } = req.params;
@@ -71,6 +85,7 @@ async function downloadPost(req, res) {
 module.exports = {
   newGet,
   uploadFile,
+  uploadFileToFolder,
   fileByIdGet,
   deleteFile,
   downloadPost,

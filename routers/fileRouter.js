@@ -17,6 +17,11 @@ const upload = multer({
 
 fileRouter.get("/new", fileController.newGet);
 fileRouter.post("/new", upload.single("file"), fileController.uploadFile);
+fileRouter.post(
+  "/new/:folderId",
+  upload.single("file"),
+  fileController.uploadFileToFolder
+);
 
 fileRouter.get("/:id", fileController.fileByIdGet);
 fileRouter.post("/:id/delete", fileController.deleteFile);

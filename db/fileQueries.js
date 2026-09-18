@@ -21,6 +21,30 @@ async function createFile(userId, title, file) {
   }
 }
 
+async function createFileToFolder(userId, title, file, folderId) {
+  try {
+    await prisma.file.create({
+      data: {
+        name: title,
+        fileUrl: file.secure_url,
+        size: String(file.bytes),
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        folder: {
+          connect: {
+            id: folderId,
+          },
+        },
+      },
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function readFileById(id) {
   try {
     const file = await prisma.file.findFirstOrThrow({
@@ -64,6 +88,7 @@ async function deleteFile(id) {
 
 module.exports = {
   createFile,
+  createFileToFolder,
   readFileById,
   readUsersFiles,
   deleteFile,
